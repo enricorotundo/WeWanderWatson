@@ -4,4 +4,8 @@
     <string name="edit_message">Watson knows everything</string>
     <string name="button_send">Send222222</string>
     <string name="title_activity_display_message">MyMessage</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_qa">QAActivity</string>
+    <string name="title_activity_prefs">PrefsActivity</string>
 </resources>
