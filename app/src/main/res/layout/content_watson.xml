@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.group5.wewander.WatsonActivity"
+    tools:showIn="@layout/activity_watson">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="ask Watson something..." />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ask"
+        android:id="@+id/button4"
+        android:layout_below="@+id/editText"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas placerat magna eu gravida. In non diam turpis. Nullam sagittis sagittis ligula, a faucibus elit eleifend non. Suspendisse porta neque quis mattis sagittis. Integer sed luctus enim. In hac habitasse platea dictumst. Suspendisse rutrum pellentesque velit vel porttitor. Proin tempor commodo tortor eget molestie. Duis quis leo elementum, lacinia nibh ut, ultricies diam.  Fusce nunc arcu, ullamcorper ac tristique et, lobortis vitae lacus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Praesent nec lacus ex. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit rhoncus diam rutrum placerat. Nullam finibus tristique diam, vel feugiat nulla tempus ut. Pellentesque condimentum vehicula rhoncus. Praesent quis magna vel metus rutrum tempus eu sit amet justo.  Sed vestibulum, sem id aliquet laoreet, lectus turpis iaculis ante, in varius turpis enim quis mi. Proin ac odio nibh. Aliquam luctus sed risus vitae consectetur. Etiam egestas orci tortor, eget porta nunc egestas sit amet. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin scelerisque sagittis nisi, sit amet feugiat lectus varius sed. Suspendisse potenti. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec libero porta, molestie enim non, feugiat justo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam iaculis malesuada risus, eget tristique lacus tempor a. Fusce non lectus velit. Etiam sed elit lacinia, tempus felis ac, imperdiet magna. Suspendisse facilisis lobortis nisi non sodales. Curabitur non mi a lorem ullamcorper ultricies.  Integer rutrum vulputate est non venenatis. Phasellus quam libero, hendrerit vel laoreet ac, pellentesque vitae purus. Proin id ipsum at ligula pharetra vulputate eget nec ante. Aenean nec eros lorem. Integer dictum lectus in pharetra sagittis. Mauris ut orci justo. Nullam ac odio lacinia, posuere ante non, porttitor enim. Nunc id nulla diam. Ut quis gravida leo. Nullam fermentum tempor faucibus. Praesent rutrum ante at rutrum lobortis. Duis nisi lacus, commodo et diam ac, commodo convallis arcu.  Donec ultrices egestas sapien, ut vestibulum sem vehicula a. Nullam venenatis lacinia neque, quis condimentum velit venenatis sed. Ut elementum diam eu aliquet varius. Maecenas dapibus leo lacus, non sodales libero gravida quis. Maecenas ut nulla commodo, aliquet nisi in, consectetur neque. Praesent porta, odio vitae tincidunt porta, mauris nisl facilisis ex, quis porta sapien risus sed risus. Nulla ut nibh vel turpis auctor consequat in ac diam.  "
+        android:id="@+id/textView"
+        android:layout_below="@+id/button4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="42dp" />
+
+</RelativeLayout>

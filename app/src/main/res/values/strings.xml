@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">WeWander</string>
+    <string name="title_activity_maps">Maps</string>
+    <string name="title_activity_main">WeWander</string>
+    <string name="title_activity_watson">WatsonActivity</string>
+</resources>
