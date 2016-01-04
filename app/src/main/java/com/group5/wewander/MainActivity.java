@@ -12,7 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -25,7 +31,11 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
@@ -63,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.addMarker(new MarkerOptions().position(amsterdam).title("Amsterdam"));
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(amsterdam)      // Sets the center of the map to Mountain View
-                .zoom(17)                   // Sets the zoom
+                .zoom(15)                   // Sets the zoom
                 .build();                   // Creates a CameraPosition from the builder
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
@@ -85,20 +95,65 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.addMarker(new MarkerOptions().position(newPosition).title("Amsterdam"));
 
         if (onMapClickCounter >= 3) {
-            // trigger the notification
-            this.notifyUser();
+            // retrieve nearby location
+
+            // Instantiate the RequestQueue.
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
+            url = url.concat("location=");
+            url = url.concat((String.valueOf(latLng.latitude)));
+            url = url.concat(",");
+            url = url.concat((String.valueOf(latLng.longitude)));
+            url = url.concat("&radius=750"); // in meters
+            url = url.concat("&rankby=prominence");
+            url = url.concat("&types=museum"); // https://developers.google.com/places/supported_types
+            url = url.concat("&key=AIzaSyAFqasjD1JlrOaEqfvr8jTdOIdFL3LQeKM");
+            Log.d(this.toString(), url);
+
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                    (Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d(this.toString(), response.toString());
+                            try {
+                                JSONArray resArray = response.getJSONArray("results");
+                                // the first is the most important within the radius
+                                JSONObject topPlace = resArray.getJSONObject(0);
+                                String placeName = topPlace.getString("name");
+                                Log.d(this.toString(), placeName);
+
+                                // trigger the notification
+                                notifyUser(placeName);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // TODO Auto-generated method stub
+
+                        }
+                    });
+            // Add the request to the RequestQueue.
+            queue.add(jsObjRequest);
+
         }
     }
 
-    private void notifyUser(){
+    private void notifyUser(String placeName){
         // build the notification
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.notification_icon)
-                        .setContentTitle("My notification")
-                        .setContentText("Hello World!");
+                        .setContentTitle("WeWander")
+                        .setContentText("Any questions about the " + placeName + "?");
         // build the notification's Intent
         Intent resultIntent = new Intent(this, WatsonActivity.class);
+        resultIntent.putExtra("placeName", placeName);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(WatsonActivity.class);
         // Adds the Intent that starts the Activity to the top of the stack

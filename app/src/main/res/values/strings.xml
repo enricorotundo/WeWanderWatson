@@ -2,5 +2,6 @@
     <string name="app_name">WeWander</string>
     <string name="title_activity_maps">Maps</string>
     <string name="title_activity_main">WeWander</string>
-    <string name="title_activity_watson">WatsonActivity</string>
+    <string name="title_activity_watson">Watson Q&amp;A</string>
+    <string name="places_api_key">AIzaSyAFqasjD1JlrOaEqfvr8jTdOIdFL3LQeKM</string>
 </resources>
