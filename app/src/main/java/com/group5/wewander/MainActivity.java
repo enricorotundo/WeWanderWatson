@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -36,6 +37,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.prefs.Preferences;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
@@ -63,13 +66,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
-        Button b = (Button) findViewById(R.id.button1);
-        b.setOnClickListener(new OnClicklistener(),{
-                public void onClick(View v) {
-                        Intent intent = new Intent(Main.this, Preferences.class)
-                        startActivity(intent);
-                }
-        });
+//        Button b = (Button) findViewById(R.id.button1);
+//        b.setOnClickListener(new OnClicklistener(),{
+//                public void onClick(View v) {
+//                        Intent intent = new Intent(Main.this, Preferences.class)
+//                        startActivity(intent);
+//                }
+//        });
     }
 
     @Override
