@@ -62,6 +62,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        Button b = (Button) findViewById(R.id.button1);
+        b.setOnClickListener(new OnClicklistener(),{
+                public void onClick(View v) {
+                        Intent intent = new Intent(Main.this, Preferences.class)
+                        startActivity(intent);
+                }
+        });
     }
 
     @Override
