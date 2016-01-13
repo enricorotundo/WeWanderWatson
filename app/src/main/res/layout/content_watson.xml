@@ -20,14 +20,6 @@
         android:layout_centerHorizontal="true"
         android:text="ask Watson something..." />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Question"
-        android:ems="10"
-        android:id="@+id/editText2" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

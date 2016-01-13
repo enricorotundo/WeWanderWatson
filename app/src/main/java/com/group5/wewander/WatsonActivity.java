@@ -10,42 +10,33 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 public class WatsonActivity extends AppCompatActivity {
 
-    private WatsonQuery query;
-    private String queryString = "";
+    // Watson headers
+    private String url = "https://dal09-gateway.watsonplatform.net/instance/568/deepqa/v1/question";
+    public RequestQueue queue;
+
+    private String queryString = "try";
     private String answer = "";
-    RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +44,7 @@ public class WatsonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_watson);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        queue = Volley.newRequestQueue(this);
 
         // handle the text input
         String placeName = getIntent().getExtras().getString("placeName");
@@ -72,206 +64,105 @@ public class WatsonActivity extends AppCompatActivity {
                 if (question.getText().toString() == "") {
                     queryString = question.getText().toString();
                 }
-                query = new WatsonQuery();
-                query.execute();
+
+                // TODO: trigger the query
+                new WatsonQuery().execute(url);
+
             }
         });
 
-
-        queue = Volley.newRequestQueue(this);
-
-        String user = "vua_student31";
-        String p = "BbCdHgjE";
-        String auth = getEncodedValues(user, p); // dnVhX3N0dWRlbnQzMTpCYkNkSGdqRQ==
-        Log.d(this.toString(), "auth: " + auth);
     }
 
-    public class WatsonQuery extends AsyncTask<Void, Integer, String> {
-
-        private SSLContext context;
-        private HttpsURLConnection connection;
-        private String jsonData;
-
+    class WatsonQuery extends AsyncTask<String,Void,String> {
 
         @Override
-        protected String doInBackground(Void... params) {
-
-            // Accepts all HTTPS certs. Do NOT use in production!!!
-            TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                    return new java.security.cert.X509Certificate[] {};
-                }
-
-                public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-                }
-
-                public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-                }
-            }};
-
-            try {
-                context = SSLContext.getInstance("TLS");
-                context.init(null, trustAllCerts, new java.security.SecureRandom());
-            } catch (java.security.KeyManagementException e) {
-                e.printStackTrace();
-            } catch (java.security.NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
+        protected String doInBackground(String... arg0) {
 
             try {
 
-                URL watsonURL = new URL("https://dal09-gateway.watsonplatform.net/instance/568/deepqa/v1/question");
-                int timeoutConnection = 30000;
-                connection = (HttpsURLConnection) watsonURL.openConnection();
-                connection.setSSLSocketFactory(context.getSocketFactory());
-                connection.setRequestMethod("POST");
-                connection.setDoOutput(true);
-                connection.setUseCaches(false);
-                connection.setConnectTimeout(timeoutConnection);
-                connection.setReadTimeout(timeoutConnection);
+                StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                        new Response.Listener<String>()
+                        {
+                            @Override
+                            public void onResponse(String response) {
+                                // print response
+                                Log.d("Response", "HERE YOU ARE:");
+                                Log.d("Response", response.toString());
 
-                // Watson specific HTTP headers
-                connection.setRequestProperty("X-SyncTimeout", "30");
-                connection.setRequestProperty("Accept", "application/json");
-                connection.setRequestProperty("Authorization", "Basic dnVhX3N0dWRlbnQzMTpCYkNkSGdqRQ==");
-                connection.setRequestProperty("Content-Type", "application/json");
-                connection.setRequestProperty("Cache-Control", "no-cache");
+                                // parse the answer to JSON
+                                try {
+                                    JSONObject mainObject = new JSONObject(response);
+                                    JSONObject question = mainObject.getJSONObject("question");
+                                    JSONArray uniObject = question.getJSONArray("evidencelist");
+                                    JSONObject obj = uniObject.getJSONObject(0);
+//                                    JSONObject uniName = obj.getString("text");
+//                                    response = uniName.toString();
+                                    response = obj.getString("text");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
 
-                OutputStream out = connection.getOutputStream();
-                String query = "{\"question\": {\"questionText\": \"" + queryString + "\"}}";
-                out.write(query.getBytes());
-                out.close();
-
-                Log.d(this.toString(), "CONNECTION: " + connection.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            int responseCode;
-            try {
-                if (connection != null) {
-                    responseCode = connection.getResponseCode();
-                    Log.d(this.toString(), "ResponseCode: " + String.valueOf(responseCode));
-                    switch(responseCode) {
-                        case 200:
-                            // successful HTTP response state
-                            InputStream input = connection.getInputStream();
-                            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-                            String line;
-                            StringBuilder response = new StringBuilder();
-                            while((line = reader.readLine()) != null) {
-                                response.append(line);
-                                response.append('\r');
+                                TextView answerTextView = (TextView) findViewById(R.id.textView);
+                                answerTextView.setText(response.toString());
                             }
-                            reader.close();
+                        },
+                        new Response.ErrorListener()
+                        {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // error
+                                Log.d("Error.Response", error.toString());
+                            }
+                        }
+                ) {
 
-                            jsonData = response.toString();
-
-
-                            Log.d(this.toString(), jsonData.toString());
-
-                            break;
-                        default:
-                            Log.d(this.toString(), "Some error occurred...");
-                            break;
+                    @Override
+                    public byte[] getBody() throws AuthFailureError {
+                        EditText text = (EditText) findViewById(R.id.editText);
+                        String requestBody = "{\"question\": {\"questionText\": \"" + text.getText().toString() + "\"}}";
+                        return requestBody.getBytes();
                     }
-                }
-            } catch (IOException e) {
+
+                    @Override
+                    protected Map<String, String> getParams()
+                    {
+                        Map<String, String>  params = new HashMap<String, String>();
+                        params.put("domain", "https://dal09-gateway.watsonplatform.net/instance/568/deepqa/v1/question");
+
+                        return params;
+                    }
+
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+
+                        HashMap<String, String> headers = new HashMap<String, String>();
+
+                        String auth = "dnVhX3N0dWRlbnQzMTpCYkNkSGdqRQ==";
+
+                        // Watson specific HTTP headers
+                        headers.put("X-SyncTimeout", "30");
+                        headers.put("Accept", "application/json");
+                        headers.put("Authorization", "Basic " + auth);
+                        headers.put("Content-Type", "application/json");
+                        headers.put("Cache-Control", "no-cache");
+
+                        return headers;
+                    }
+                };
+                System.out.println("StringRequest body and headers--------------------------------------------------------------->");
+                System.out.println(postRequest.getBody().toString());
+                System.out.println(postRequest.getHeaders());
+                System.out.println("<---------------------------------------------------------------------------------------------");
+                queue.add(postRequest);
+
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            if(jsonData != null) {
-                return jsonData;
-            }
 
-//            Log.d(this.toString(), "try to send the request to Watson");
-//            try {
-//
-//
-//                String url = "https://dal09-gateway.watsonplatform.net/instance/568/deepqa/v1/question";
-//                String requestBody = "{\"question\": {\"questionText\": \"" + queryString + "\"}}";
-//
-//                Log.d(this.toString(), "Building the JSON request");
-//
-//                JsonObjectRequest jsObjRequest = new JsonObjectRequest
-//                        (Request.Method.POST, url, requestBody, new Response.Listener<JSONObject>() {
-//
-//                            @Override
-//                            public void onResponse(JSONObject response) {
-//                                Log.d(this.toString(), response.toString());
-//                                try {
-//                                    Log.d(this.toString(), "DOODDOOD");
-//                                    Log.d(this.toString(), response.toString());
-////                                    JSONArray resArray = response.getJSONArray("results");
-////                                    // the first is the most important within the radius
-////                                    JSONObject topPlace = resArray.getJSONObject(0);
-////                                    String placeName = topPlace.getString("name");
-////                                    Log.d(this.toString(), placeName);
-//
-//                                } catch (Exception e) {
-//                                    e.printStackTrace();
-//                                }
-//
-//                            }
-//
-//                        }, new Response.ErrorListener() {
-//
-//                            @Override
-//                            public void onErrorResponse(VolleyError error) {
-//                                // TODO Auto-generated method stub
-//
-//                            }
-//                        }) {
-//
-//                    @Override
-//                    public Map<String, String> getHeaders() throws AuthFailureError {
-//
-//                        HashMap<String, String> headers = new HashMap<String, String>();
-//
-//                        String user = "vua_student31";
-//                        String p = "BbCdHgjE";
-//
-//                        String auth = getEncodedValues(user, p);
-//                        Log.d(this.toString(), auth);
-//
-//                        // Watson specific HTTP headers
-//                        headers.put("X-SyncTimeout", "30");
-//                        headers.put("Accept", "application/json");
-//                        headers.put("Authorization", "Basic " + auth);
-//                        headers.put("Content-Type", "application/json");
-//                        headers.put("Cache-Control", "no-cache");
-//
-//                        return headers;
-//                    }
-//                };
-//                // Add the request to the RequestQueue.
-//                queue.add(jsObjRequest);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
             return null;
         }
 
-        @Override
-        protected void onPostExecute(String result) {
-            if (result != null) {
-                TextView answerTextView = (TextView) findViewById(R.id.editText);
-                answerTextView.setText(result.toString());
-                Log.d(this.toString(), result.toString());
-            }
-        }
-    }
-
-    private String getEncodedValues(String user_id, String user_password) {
-        String textToEncode = user_id + ":" + user_password;
-        byte[] data = null;
-        try {
-            data = textToEncode.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        String base64 = Base64.encodeToString(data, Base64.DEFAULT);
-        return base64;
     }
 }
 
