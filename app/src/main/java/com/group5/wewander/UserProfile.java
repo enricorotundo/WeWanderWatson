@@ -1,5 +1,6 @@
 package com.group5.wewander;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,7 +28,12 @@ public class UserProfile extends AppCompatActivity {
         final Button button = (Button) findViewById(R.id.Save_button);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // if click go to main page
+                switch (v.getId()) {
+                    case R.id.preferences:
+                        // doStuff
+                        setContentView(R.layout.activity_maps);
+                        break;
+                }
 
             }
         });

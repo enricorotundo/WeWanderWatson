@@ -20,8 +20,12 @@ public class LoginActivity extends AppCompatActivity {
         final Button button = (Button) findViewById(R.id.loginButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // if click go to user profile
-
+                switch (v.getId()) {
+                    case R.id.loginButton:
+                        // doStuff
+                        setContentView(R.layout.activity_user_profile);
+                        break;
+                }
             }
         });
 
