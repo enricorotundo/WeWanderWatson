@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <?xml version="1.0" encoding="utf-8"?>
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/view_user_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1">
+        <TextView
+            android:layout_height="100dp"/>
+
+        <View
+            android:layout_height="2dip"
+            android:background="#FF909090" />
+
+        <TableRow>
+            <TextView
+                android:layout_column="1"
+                android:text="Name"
+                android:textSize="20dp"
+                android:padding="3dip" />
+
+            <TextView
+                android:id="@+id/user_name"
+                android:gravity="right"
+                android:padding="3dip"
+                android:textSize="20dp"/>
+        </TableRow>
+
+        <View
+            android:layout_height="2dip"
+            android:background="#FF909090" />
+
+        <TableRow>
+            <TextView
+                android:layout_column="1"
+                android:text="Age"
+                android:textSize="20dp"
+                android:padding="3dip" />
+            <TextView
+                android:id="@+id/user_age"
+                android:gravity="right"
+                android:padding="3dip"
+                android:textSize="20dp"/>
+        </TableRow>
+
+        <View
+            android:layout_height="2dip"
+            android:background="#FF909090" />
+
+        <TableRow>
+            <TextView
+                android:layout_column="1"
+                android:text="Gender"
+                android:textSize="20dp"
+                android:padding="3dip" />
+            <TextView
+                android:id="@+id/user_gender"
+                android:gravity="right"
+                android:textSize="20dp"
+                android:padding="3dip" />
+        </TableRow>
+
+        <View
+            android:layout_height="2dip"
+            android:background="#FF909090" />
+
+        <TableRow>
+            <TextView
+                android:layout_column="1"
+                android:text="Select preferences:"
+                android:textSize="20dp"
+                android:padding="3dip" />
+            <TextView
+                android:id="@+id/preferences"
+                android:gravity="right"
+                android:textSize="20dp"
+                android:padding="3dip" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_height="20dip"
+                android:background="#FF909090" />
+
+            <CheckBox
+                android:id="@+id/historical_museums"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Historical museums" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_height="20dip"
+                android:background="#FF909090" />
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Attractions"
+                android:id="@+id/attractions" />
+        </TableRow>
+
+        <TableRow>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_height="20dip"
+                android:background="#FF909090" />
+
+            <CheckBox
+                android:id="@+id/dutch_masters"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Dutch Masters" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_height="20dip"
+                android:background="#FF909090" />
+
+            <CheckBox
+                android:id="@+id/modern"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Modern and contemporary art" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_height="20dip"
+                android:background="#FF909090" />
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Photography museums"
+                android:id="@+id/photo" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_height="20dip"
+                android:background="#FF909090" />
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Unusual museums"
+                android:id="@+id/unusual" />
+        </TableRow>
+
+
+        <TableRow>
+            <Button
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Save preferences"
+                android:onClick="Save preferences"
+                android:layout_column="1" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>
