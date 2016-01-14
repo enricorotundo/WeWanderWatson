@@ -178,7 +178,8 @@
                 android:layout_width="wrap_content"
                 android:text="Save preferences"
                 android:onClick="Save preferences"
-                android:layout_column="1" />
+                android:layout_column="1"
+                android:id="@+id/Save_button"/>
         </TableRow>
     </TableLayout>
 
