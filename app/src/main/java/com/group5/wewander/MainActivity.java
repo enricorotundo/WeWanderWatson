@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             url = url.concat("&radius=750"); // in meters
             url = url.concat("&rankby=prominence");
             url = url.concat("&types=museum"); // https://developers.google.com/places/supported_types
-            url = url.concat("&key=AIzaSyAFqasjD1JlrOaEqfvr8jTdOIdFL3LQeKM");
+            url = url.concat("&key=");
             Log.d(this.toString(), url);
 
             JsonObjectRequest jsObjRequest = new JsonObjectRequest

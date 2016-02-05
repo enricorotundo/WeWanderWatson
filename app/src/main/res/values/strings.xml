@@ -3,7 +3,7 @@
     <string name="title_activity_maps">Maps</string>
     <string name="title_activity_main">WeWander</string>
     <string name="title_activity_watson">Watson Q&amp;A</string>
-    <string name="places_api_key">AIzaSyAFqasjD1JlrOaEqfvr8jTdOIdFL3LQeKM</string>
+    <string name="places_api_key">TODO</string>
     <string name="title_activity_preferences">Preferences</string>
 
     <!-- Strings related to Settings -->
